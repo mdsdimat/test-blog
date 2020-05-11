@@ -40,10 +40,11 @@ class CategoryRepository extends CoreRepository
             ->startCondition()
             ->selectRaw($columns)
             ->get();
-        $categoryList = [];
-        foreach ($list as $item) {
-            $categoryList[$item->id] = $item->name;
-        }
+
+        $categoryList = $list->mapWithKeys(function ($item) {
+           return [$item->id => $item->name];
+        });
+
         return collect($categoryList);
     }
 
